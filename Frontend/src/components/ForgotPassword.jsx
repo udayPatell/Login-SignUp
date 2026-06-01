@@ -12,6 +12,7 @@ import {
   validatePassword,
   validateConfirmPassword,
 } from "../utils/validators";
+import { toast } from "react-toastify";
 import "../App.css";
 
 function ForgotPassword() {
@@ -48,10 +49,10 @@ function ForgotPassword() {
     setLoading(false);
 
     if (res.success) {
-      setApiMessage("OTP sent! Check your email.");
+      toast.success("OTP sent! Check your email.");
       setStep(2);
     } else {
-      setApiMessage(res.msg);
+      toast.error(res.msg);
     }
   }
 
@@ -72,10 +73,10 @@ function ForgotPassword() {
     setLoading(false);
 
     if (res.success) {
-      setApiMessage("OTP verified!");
+      toast.success("OTP verified!");
       setStep(3);
     } else {
-      setApiMessage(res.msg);
+      toast.error(res.msg);
     }
   }
 
@@ -98,10 +99,10 @@ function ForgotPassword() {
     setLoading(false);
 
     if (res.success) {
-      setApiMessage("Password reset! Redirecting to login…");
+      toast.success("Password reset! Redirecting to login…");
       setTimeout(() => navigate("/login"), 1500);
     } else {
-      setApiMessage(res.msg);
+      toast.error(res.msg);
     }
   }
 

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { signup } from "../redux/actions/authActions";
 import { Link, useNavigate } from "react-router-dom";
 import { validateSignupForm, isFormValid } from "../utils/validators";
+import { toast } from "react-toastify";
 import "../App.css";
 
 function Signup() {
@@ -23,7 +24,6 @@ function Signup() {
     confirmPassword: "",
   });
 
-  const [apiMessage, setApiMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   function handleChange(field, value) {
@@ -44,7 +44,7 @@ function Signup() {
     if (!isFormValid(result)) return;
 
     setLoading(true);
-    setApiMessage("");
+    // setApiMessage("");
 
     const res = await dispatch(
       signup({
@@ -57,10 +57,10 @@ function Signup() {
     setLoading(false);
 
     if (res && res.msg === "User registered") {
-      setApiMessage("Account created");
+      toast.success("Account created");
       setTimeout(() => navigate("/login"), 1500);
     } else {
-      setApiMessage(res?.msg || "Signup failed");
+      toast.error(res?.msg || "Signup failed");
     }
   }
 
@@ -141,16 +141,6 @@ function Signup() {
         <button type="submit" disabled={loading}>
           {loading ? "Creating account…" : "Sign Up"}
         </button>
-
-        {apiMessage && (
-          <p
-            className={
-              apiMessage.includes("created") ? "success-msg" : "error-msg"
-            }
-          >
-            {apiMessage}
-          </p>
-        )}
 
         <p>
           Already have an account? <Link to="/login">Login</Link>

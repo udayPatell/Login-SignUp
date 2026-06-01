@@ -152,6 +152,47 @@ router.post("/reset-password", async (req, res) => {
   }
 });
 
+// router.post("/change-password/:token", async (req, res) => {
+//   const { token } = req.params;
+//   const { newPassword } = req.body;
+
+//   if (!newPassword || !isStrongPassword(newPassword))
+//     return res.status(400).json({
+//       msg: "New password must be 8+ chars with 1 uppercase, 1 number, and 1 special character.",
+//     });
+
+//   try {
+//     const user = await User.findOne({ resetToken: token, resetTokenExpiry: { $gt: Date.now() } });
+//     if (!user) return res.status(400).json({ msg: "Invalid or expired reset token." });
+
+//     user.password = await bcrypt.hash(newPassword, 10);
+//     user.resetToken = null;
+//     user.resetTokenExpiry = null;
+//     await user.save();
+
+//     res.json({ msg: "Password updated successfully." });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ msg: "Server error. Please try again." });
+//   }
+
+//   await transporter.sendMail({
+//     from: `"UserBase App" <${process.env.EMAIL_USER}>`,
+//     to: user.email,
+//     subject: "Your Password Has Been Changed",
+//     html: `
+//       <div style="font-family: Arial, sans-serif; max-width: 480px; margin: auto;">
+//         <h2 style="color: #333;">Password Changed Successfully</h2>
+//         <p>Hi <strong>${user.name}</strong>,</p>
+//         <p>Your password has been updated. If you did not make this change, please contact our support immediately.</p>
+//         <p style="color: #888; font-size: 13px;">
+//           This is an automated message, please do not reply.
+//         </p>
+//       </div>
+//     `,
+//   });
+// });
+
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
 

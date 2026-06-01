@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../redux/actions/authActions";
 import { Link, useNavigate } from "react-router-dom";
 import { validateLoginForm, isFormValid } from "../utils/validators";
+import { toast } from "react-toastify";
 import "../App.css";
 
 function Login() {
@@ -13,7 +14,6 @@ function Login() {
 
   const [errors, setErrors] = useState({ email: "", password: "" });
 
-  const [apiMessage, setApiMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   function handleChange(field, value) {
@@ -35,7 +35,7 @@ function Login() {
     if (!isFormValid(result)) return;
 
     setLoading(true);
-    setApiMessage("");
+    // setApiMessage("");
 
     const res = await dispatch(
       login({
@@ -49,10 +49,10 @@ function Login() {
     if (res && res.token) {
       localStorage.setItem("token", res.token);
       localStorage.setItem("user", JSON.stringify(res.user));
-      setApiMessage("Login successful! Redirecting…");
+      toast.success("Login successful! Redirecting…");
       setTimeout(() => navigate("/dashboard"), 1000);
     } else {
-      setApiMessage(res?.msg || "Email or password is wrong.");
+      toast.error(res?.msg || "Email or password is wrong.");
     }
   }
 
@@ -88,16 +88,6 @@ function Login() {
         <button type="submit" disabled={loading}>
           {loading ? "Logging in…" : "Login"}
         </button>
-
-        {apiMessage && (
-          <p
-            className={
-              apiMessage.includes("successful") ? "success-msg" : "error-msg"
-            }
-          >
-            {apiMessage}
-          </p>
-        )}
 
         <p>
           Don't have an account? <Link to="/signup">Sign Up</Link>

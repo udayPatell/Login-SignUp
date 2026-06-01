@@ -7,6 +7,7 @@ import {
   validatePassword,
   validateConfirmPassword,
 } from "../utils/validators";
+import { toast } from "react-toastify";
 import "../App.css";
 
 function ResetPassword() {
@@ -67,7 +68,7 @@ function ResetPassword() {
     e.preventDefault();
     if (!validateAll()) return;
     setLoading(true);
-    setApiMessage("");
+    // setApiMessage("");
     setSuccess(false);
 
     const res = await dispatch(
@@ -82,7 +83,7 @@ function ResetPassword() {
 
     if (res.success) {
       setSuccess(true);
-      setApiMessage(res.msg || "Password updated successfully.");
+      toast.success(res.msg || "Password updated successfully.");
 
       setForm({
         email: "",
@@ -93,7 +94,7 @@ function ResetPassword() {
       setTimeout(() => navigate("/login"), 1000);
     } else {
       setSuccess(false);
-      setApiMessage(res.msg || "Failed to update password.");
+      toast.error(res.msg || "Failed to update password.");
     }
   }
 
