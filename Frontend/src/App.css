@@ -73,3 +73,126 @@ body {
 .form-box a:hover {
   text-decoration: underline;
 }
+
+/* ============================================
+   ADD THESE TO YOUR EXISTING App.css
+   Validation styles for forms
+   ============================================ */
+
+/* Wraps input + error message together */
+.field-wrap {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+/* Red border on invalid input */
+.input-error {
+  border-color: #f87171 !important;
+  background: #2d101022 !important;
+}
+
+/* Red error text under field */
+.error-msg {
+  color: #f87171;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+/* Green success message */
+.success-msg {
+  color: #4ade80;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* Password strength bar container */
+.strength-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+/* The colored progress bar */
+.strength-bar {
+  height: 4px;
+  border-radius: 999px;
+  transition:
+    width 0.3s,
+    background 0.3s;
+  flex-shrink: 0;
+}
+
+/* "Weak / Fair / Good / Strong" label */
+.strength-label {
+  font-size: 11px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+/* Step bubbles row for ForgotPassword */
+.steps-row {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 16px 0 24px;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-bubble {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  background: #2a2f3d;
+  color: #555d74;
+  border: 2px solid #2a2f3d;
+  transition: all 0.2s;
+}
+
+.step-bubble.active {
+  background: #0d2318;
+  color: #4ade80;
+  border-color: #4ade80;
+}
+
+.step-bubble.done {
+  background: #4ade80;
+  color: #085041;
+  border-color: #4ade80;
+}
+
+.step-label {
+  font-size: 11px;
+  color: #555d74;
+}
+
+/* Step description text */
+.step-desc {
+  font-size: 13px;
+  color: #8b92a8;
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Inline text link button (for Resend OTP) */
+.link-btn {
+  color: #4ade80;
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: underline;
+}

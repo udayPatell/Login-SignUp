@@ -1,52 +1,114 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/actions/authActions";
+import { Link, useNavigate } from "react-router-dom";
+import { validateLoginForm, isFormValid } from "../utils/validators";
 import "../App.css";
-import { Link } from "react-router-dom";
 
 function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const [apiMessage, setApiMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  function handleChange(field, value) {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: "" }));
+  }
+
+  function handleBlur(field) {
+    const result = validateLoginForm(form);
+    setErrors((prev) => ({ ...prev, [field]: result[field] }));
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await dispatch(login(form));
+    const result = validateLoginForm(form);
+    setErrors(result);
 
-    if (res && res.user) {
-      setMessage(" Login successful! Email and password are correct.");
+    if (!isFormValid(result)) return;
+
+    setLoading(true);
+    setApiMessage("");
+
+    const res = await dispatch(
+      login({
+        email: form.email.trim(),
+        password: form.password,
+      }),
+    );
+
+    setLoading(false);
+
+    if (res && res.token) {
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("user", JSON.stringify(res.user));
+      setApiMessage("Login successful! Redirecting…");
+      setTimeout(() => navigate("/dashboard"), 1000);
     } else {
-      setMessage(" Email or password is wrong.");
+      setApiMessage(res?.msg || "Email or password is wrong.");
     }
-  };
+  }
 
   return (
     <div className="container">
-      <form className="form-box" onSubmit={handleSubmit}>
+      <form className="form-box" onSubmit={handleSubmit} noValidate>
         <h2>Login</h2>
 
-        <input
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
+        <div className="field-wrap">
+          <input
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => handleChange("email", e.target.value)}
+            onBlur={() => handleBlur("email")}
+            className={errors.email ? "input-error" : ""}
+          />
+          {errors.email && <p className="error-msg">{errors.email}</p>}
+        </div>
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
+        <div className="field-wrap">
+          <input
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => handleChange("password", e.target.value)}
+            onBlur={() => handleBlur("password")}
+            className={errors.password ? "input-error" : ""}
+          />
+          {errors.password && <p className="error-msg">{errors.password}</p>}
+        </div>
 
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in…" : "Login"}
+        </button>
 
-        {message && <p>{message}</p>}
+        {apiMessage && (
+          <p
+            className={
+              apiMessage.includes("successful") ? "success-msg" : "error-msg"
+            }
+          >
+            {apiMessage}
+          </p>
+        )}
+
         <p>
           Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>
+        <p>
+          <Link to="/forgot-password">Forgot Password?</Link>
+        </p>
 
         <p>
-          Reset password? <Link to="/reset-password">Click here</Link>
+          Already know your password?{" "}
+          <Link to="/reset-password">Reset Password</Link>
         </p>
       </form>
     </div>
