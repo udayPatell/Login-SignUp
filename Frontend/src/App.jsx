@@ -8,9 +8,9 @@ import {
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import ResetPassword from "./components/ResetPassword";
+import RequestReset from "./components/RequestReset";
 import ForgotPassword from "./components/ForgotPassword";
 import Dashboard from "./components/Dashboard";
-import { ToastContainer, toast } from "react-toastify";
 import "./App.css";
 
 const App = () => {
@@ -20,12 +20,12 @@ const App = () => {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/request-reset" element={<RequestReset />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
-      <ToastContainer />
     </Router>
   );
 };

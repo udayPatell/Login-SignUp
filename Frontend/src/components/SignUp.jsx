@@ -64,27 +64,11 @@ function Signup() {
     }
   }
 
-  // function getStrength(password) {
-  //   if (!password) return { label: "", color: "" };
-  //   let score = 0;
-  //   if (password.length >= 8) score++;
-  //   if (/[A-Z]/.test(password)) score++;
-  //   if (/[0-9]/.test(password)) score++;
-  //   if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) score++;
-  //   if (score <= 1) return { label: "Weak", color: "#f87171" };
-  //   if (score === 2) return { label: "Fair", color: "#fbbf24" };
-  //   if (score === 3) return { label: "Good", color: "#60a5fa" };
-  //   return { label: "Strong", color: "#4ade80" };
-  // }
-
-  // const strength = getStrength(form.password);
-
   return (
     <div className="container">
       <form className="form-box" onSubmit={handleSubmit} noValidate>
         <h2>Sign Up</h2>
 
-        {/* ── Name ── */}
         <div className="field-wrap">
           <input
             type="text"
@@ -106,7 +90,6 @@ function Signup() {
             onBlur={() => handleBlur("email")}
             className={errors.email ? "input-error" : ""}
           />
-          {/* <p className="info-msg">Enter a valid email address</p> */}
           {errors.email && <p className="error-msg">{errors.email}</p>}
         </div>
 
@@ -120,7 +103,6 @@ function Signup() {
             className={errors.password ? "input-error" : ""}
           />
 
-          {/* <p className="info-msg">password contains at least 8 characters</p> */}
           {errors.password && <p className="error-msg">{errors.password}</p>}
         </div>
 

@@ -24,7 +24,7 @@ export const login = (data) => async (dispatch) => {
 
 export const resetPassword = (data) => async (dispatch) => {
   try {
-    const res = await axios.post(`${BASE}/reset-password`, data);
+    const res = await axios.post(`${BASE}/reset-password-old`, data);
     return { success: true, msg: res.data.msg };
   } catch (err) {
     return { success: false, msg: err.response?.data?.msg || "Error" };
@@ -57,6 +57,33 @@ export const forgotPasswordSetNew = (email, otp, newPassword) => async () => {
     const res = await axios.post(`${BASE}/set-new-password`, {
       email,
       otp,
+      newPassword,
+    });
+    return { success: true, msg: res.data.msg };
+  } catch (err) {
+    return {
+      success: false,
+      msg: err.response?.data?.msg || "Error resetting password",
+    };
+  }
+};
+
+export const requestReset = (email) => async () => {
+  try {
+    const res = await axios.post(`${BASE}/request-reset`, { email });
+    return { success: true, msg: res.data.msg };
+  } catch (err) {
+    return {
+      success: false,
+      msg: err.response?.data?.msg || "Error sending reset email",
+    };
+  }
+};
+
+export const resetPasswordWithToken = (token, newPassword) => async () => {
+  try {
+    const res = await axios.post(`${BASE}/reset-password`, {
+      token,
       newPassword,
     });
     return { success: true, msg: res.data.msg };

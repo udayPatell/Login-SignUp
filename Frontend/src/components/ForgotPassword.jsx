@@ -64,7 +64,7 @@ function ForgotPassword() {
     if (err) return;
 
     setLoading(true);
-    setApiMessage("");
+    // setApiMessage("");
 
     const res = await dispatch(
       forgotPasswordVerifyOTP(email.trim(), otp.trim()),
@@ -170,7 +170,7 @@ function ForgotPassword() {
                 onClick={() => {
                   setStep(1);
                   setOtp("");
-                  setApiMessage("");
+                  // setApiMessage("");
                 }}
               >
                 Resend OTP

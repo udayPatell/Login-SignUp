@@ -11,9 +11,7 @@ function Login() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({ email: "", password: "" });
-
   const [errors, setErrors] = useState({ email: "", password: "" });
-
   const [loading, setLoading] = useState(false);
 
   function handleChange(field, value) {
@@ -35,7 +33,6 @@ function Login() {
     if (!isFormValid(result)) return;
 
     setLoading(true);
-    // setApiMessage("");
 
     const res = await dispatch(
       login({
@@ -95,10 +92,9 @@ function Login() {
         <p>
           <Link to="/forgot-password">Forgot Password?</Link>
         </p>
-
         <p>
-          Already know your password?{" "}
-          <Link to="/reset-password">Reset Password</Link>
+          Want to reset password?{" "}
+          <Link to="/request-reset">Reset Password</Link>
         </p>
       </form>
     </div>
