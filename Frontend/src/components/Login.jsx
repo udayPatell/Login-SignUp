@@ -29,16 +29,12 @@ function Login() {
 
     const result = validateLoginForm(form);
     setErrors(result);
-
     if (!isFormValid(result)) return;
 
     setLoading(true);
 
     const res = await dispatch(
-      login({
-        email: form.email.trim(),
-        password: form.password,
-      }),
+      login({ email: form.email.trim(), password: form.password }),
     );
 
     setLoading(false);
@@ -86,15 +82,12 @@ function Login() {
           {loading ? "Logging in…" : "Login"}
         </button>
 
-        <p>
+        <p style={{ marginTop: "12px" }}>
           Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>
-        <p>
+
+        <p style={{ marginTop: "6px" }}>
           <Link to="/forgot-password">Forgot Password?</Link>
-        </p>
-        <p>
-          Want to reset password?{" "}
-          <Link to="/request-reset">Reset Password</Link>
         </p>
       </form>
     </div>

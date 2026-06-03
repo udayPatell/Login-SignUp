@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { resetPasswordWithToken } from "../redux/actions/authActions";
@@ -10,23 +10,34 @@ function ResetPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
   const token = searchParams.get("token");
+
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [apiMessage, setApiMessage] = useState("");
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const [errors, setErrors] = useState({
     newPassword: "",
     confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    if (!token) {
-      setApiMessage("Invalid reset link. Please request a new one.");
-    }
-  }, [token]);
+  if (!token) {
+    return (
+      <div className="container">
+        <div className="form-box">
+          <h2>Reset Password</h2>
+          <p className="error-msg" style={{ marginTop: "12px" }}>
+            Invalid or missing reset link.
+          </p>
+          <p style={{ marginTop: "16px" }}>
+            <Link to="/forgot-password">Request a new reset link</Link>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   function handleBlur(field) {
     if (field === "newPassword")
       setErrors((prev) => ({
@@ -39,6 +50,7 @@ function ResetPassword() {
         confirmPassword: validateConfirmPassword(newPassword, confirmPassword),
       }));
   }
+
   function validateAll() {
     const result = {
       newPassword: validatePassword(newPassword),
@@ -50,54 +62,29 @@ function ResetPassword() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    if (!token) return;
-
     if (!validateAll()) return;
 
     setLoading(true);
-    setApiMessage("");
-    setSuccess(false);
+
     const res = await dispatch(resetPasswordWithToken(token, newPassword));
 
     setLoading(false);
 
     if (res.success) {
       setSuccess(true);
-      setApiMessage("Password reset! Redirecting to login…");
       toast.success("Password reset successfully!");
       setTimeout(() => navigate("/login"), 2000);
     } else {
-      setSuccess(false);
-      setApiMessage(res.msg || "Failed to reset password.");
       toast.error(res.msg || "Failed to reset password.");
     }
-  }
-
-  if (!token) {
-    return (
-      <div className="container">
-        <div className="form-box">
-          <h2>Reset Password</h2>
-          <p className="error-msg" style={{ marginTop: "12px" }}>
-            Invalid or missing reset link.
-          </p>
-          <p style={{ marginTop: "16px", fontSize: "13px" }}>
-            <Link to="/request-reset">Request a new reset link</Link>
-          </p>
-        </div>
-      </div>
-    );
   }
 
   return (
     <div className="container">
       <form className="form-box" onSubmit={handleSubmit} noValidate>
-        <h2>Set New Password</h2>
+        <h2>Reset Password</h2>
 
-        <p className="step-desc">
-          Choose a strong new password for your account.
-        </p>
+        <p className="step-desc">Enter your new password below.</p>
 
         <div className="field-wrap">
           <input
@@ -111,6 +98,7 @@ function ResetPassword() {
             onBlur={() => handleBlur("newPassword")}
             className={errors.newPassword ? "input-error" : ""}
             disabled={success}
+            autoFocus
           />
 
           {errors.newPassword && (
@@ -142,12 +130,12 @@ function ResetPassword() {
           </button>
         )}
 
-        {apiMessage && (
-          <p className={success ? "success-msg" : "error-msg"}>{apiMessage}</p>
+        {success && (
+          <p className="success-msg">Password reset! Redirecting to login…</p>
         )}
 
         <p style={{ marginTop: "16px" }}>
-          <Link to="/login">Back to Login</Link>
+          <Link to="/login">← Back to Login</Link>
         </p>
       </form>
     </div>

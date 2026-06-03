@@ -22,12 +22,36 @@ export const login = (data) => async (dispatch) => {
   }
 };
 
+export const checkEmail = (email) => async () => {
+  try {
+    const res = await axios.post(`${BASE}/check-email`, { email });
+    return { success: true, exists: res.data.exists, name: res.data.name };
+  } catch (err) {
+    return {
+      success: false,
+      msg: err.response?.data?.msg || "Error checking email",
+    };
+  }
+};
+
 export const resetPassword = (data) => async (dispatch) => {
   try {
     const res = await axios.post(`${BASE}/reset-password-old`, data);
     return { success: true, msg: res.data.msg };
   } catch (err) {
     return { success: false, msg: err.response?.data?.msg || "Error" };
+  }
+};
+
+export const changePassword = (data) => async () => {
+  try {
+    const res = await axios.post(`${BASE}/change-password`, data);
+    return { success: true, msg: res.data.msg };
+  } catch (err) {
+    return {
+      success: false,
+      msg: err.response?.data?.msg || "Error changing password",
+    };
   }
 };
 

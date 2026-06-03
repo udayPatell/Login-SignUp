@@ -1,0 +1,31 @@
+.dashboard {
+  height: 100vh;
+  background: #121212;
+  color: white;
+  position: relative;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 200px;
+  margin-bottom: 200px;
+}
+
+.center-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.icon {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.icon:hover {
+  color: #4caf50;
+}
