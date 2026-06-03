@@ -58,7 +58,7 @@ function Signup() {
 
     if (res && res.msg === "User registered") {
       toast.success("Account created");
-      setTimeout(() => navigate("/login"), 1500);
+      setTimeout(() => navigate("/dashboard"), 1500);
     } else {
       toast.error(res?.msg || "Signup failed");
     }
